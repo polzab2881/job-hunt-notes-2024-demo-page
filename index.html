@@ -1,129 +1,109 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Hey 😊</title>
-  <style>
-    body {
-      height: 100vh;
-      margin: 0;
-      background: linear-gradient(135deg, #ffe0f0, #fff6fb);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-family: Arial, sans-serif;
-      overflow: hidden;
-    }
+<meta charset="UTF-8">
+<title>Hey 😊</title>
 
-    .box {
-      background: white;
-      padding: 35px;
-      border-radius: 20px;
-      text-align: center;
-      box-shadow: 0 15px 30px rgba(0,0,0,0.2);
-      animation: pop 0.6s ease;
-      z-index: 2;
-    }
+<style>
+  body {
+    height: 100vh;
+    margin: 0;
+    background: linear-gradient(135deg, #ffe0f0, #fff6fb);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: Arial, sans-serif;
+    overflow: hidden;
+  }
 
-    @keyframes pop {
-      0% { transform: scale(0.7); }
-      100% { transform: scale(1); }
-    }
+  .box {
+    width: 85%;
+    max-width: 380px;
+    background: white;
+    padding: 40px 25px;
+    border-radius: 24px;
+    text-align: center;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.25);
+    animation: popIn 0.5s ease;
+    z-index: 5;
+  }
 
-    h1 {
-      color: #ff4d6d;
-      font-size: 26px;
-    }
+  @keyframes popIn {
+    from { transform: scale(0.6); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+  }
 
-    button {
-      padding: 12px 24px;
-      font-size: 18px;
-      border: none;
-      border-radius: 12px;
-      margin: 10px;
-      cursor: pointer;
-      transition: transform 0.2s;
-    }
+  h1 {
+    color: #ff4d6d;
+    font-size: 28px;
+    margin-bottom: 25px;
+  }
 
-    #yes {
-      background: #ff4d6d;
-      color: white;
-    }
+  p {
+    font-size: 18px;
+  }
 
-    #no {
-      background: #ccc;
-      position: absolute;
-    }
+  button {
+    padding: 14px 26px;
+    font-size: 18px;
+    border: none;
+    border-radius: 14px;
+    margin: 10px;
+    cursor: pointer;
+    transition: transform 0.2s;
+  }
 
-    .float {
-      position: absolute;
-      animation: floatUp 5s linear;
-      font-size: 22px;
-      pointer-events: none;
-    }
+  #yes {
+    background: #ff4d6d;
+    color: white;
+  }
 
-    @keyframes floatUp {
-      0% { transform: translateY(0); opacity: 1; }
-      100% { transform: translateY(-800px); opacity: 0; }
-    }
-  </style>
+  #no {
+    background: #ccc;
+    position: absolute;
+  }
+
+  .confetti {
+    position: absolute;
+    font-size: 22px;
+    animation: fall 3.5s linear forwards;
+    pointer-events: none;
+  }
+
+  @keyframes fall {
+    0% { transform: translateY(-50px) rotate(0deg); opacity: 1; }
+    100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
+  }
+</style>
 </head>
+
 <body>
 
-  <div class="box" id="question">
-    <h1>💖 Can you be my Valentine?</h1>
-    <button id="yes" onclick="yesClicked()">Yes 💕</button>
-    <button id="no" onmouseover="moveNo()">No 😅</button>
-  </div>
+<div class="box" id="question">
+  <h1>💖 Can you be my Valentine?</h1>
+  <button id="yes">Yes 💕</button>
+  <button id="no">No 😅</button>
+</div>
 
-  <!-- Sounds -->
-  <audio id="noSound">
-    <source src="https://www.myinstants.com/media/sounds/cartoon-slip.mp3">
-  </audio>
+<!-- AUDIO (mobile-safe) -->
+<audio id="yesSound" preload="auto">
+  <source src="https://www.soundjay.com/human/sounds/applause-01.mp3">
+</audio>
 
-  <audio id="yesMusic">
-    <source src="https://www.bensound.com/bensound-music/bensound-love.mp3">
-  </audio>
+<audio id="noSound" preload="auto">
+  <source src="https://www.myinstants.com/media/sounds/cartoon-slip.mp3">
+</audio>
 
-  <script>
-    let yesScale = 1;
+<script>
+  const noBtn = document.getElementById("no");
+  const yesBtn = document.getElementById("yes");
+  const yesSound = document.getElementById("yesSound");
+  const noSound = document.getElementById("noSound");
 
-    function moveNo() {
-      const noBtn = document.getElementById("no");
-      const yesBtn = document.getElementById("yes");
+  let yesScale = 1;
 
-      noBtn.style.left = Math.random() * (window.innerWidth - 120) + "px";
-      noBtn.style.top = Math.random() * (window.innerHeight - 60) + "px";
+  noBtn.addEventListener("touchstart", moveNo);
+  noBtn.addEventListener("mouseover", moveNo);
 
-      document.getElementById("noSound").play();
-
-      yesScale += 0.15;
-      yesBtn.style.transform = `scale(${yesScale})`;
-    }
-
-    function yesClicked() {
-      document.getElementById("yesMusic").play();
-
-      document.body.innerHTML = `
-        <div class="box">
-          <h1>❤️ I love you ❤️</h1>
-          <p>You just made my day 🥰<br>
-          Now you owe me a date 💎💖</p>
-        </div>
-      `;
-    }
-
-    // floating hearts & gems
-    setInterval(() => {
-      const el = document.createElement("div");
-      el.className = "float";
-      el.innerHTML = Math.random() > 0.5 ? "💖" : "💎";
-      el.style.left = Math.random() * 100 + "vw";
-      el.style.bottom = "0px";
-      document.body.appendChild(el);
-      setTimeout(() => el.remove(), 5000);
-    }, 300);
-  </script>
-
-</body>
-</html>
+  function moveNo() {
+    noBtn.style
