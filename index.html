@@ -2,16 +2,16 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Hi 😊</title>
+  <title>Hey 😊</title>
   <style>
     body {
       height: 100vh;
       margin: 0;
-      background: linear-gradient(135deg, #ffd6e8, #ffeef5);
+      background: linear-gradient(135deg, #ffe0f0, #fff6fb);
       display: flex;
       justify-content: center;
       align-items: center;
-      font-family: "Comic Sans MS", cursive;
+      font-family: Arial, sans-serif;
       overflow: hidden;
     }
 
@@ -22,6 +22,7 @@
       text-align: center;
       box-shadow: 0 15px 30px rgba(0,0,0,0.2);
       animation: pop 0.6s ease;
+      z-index: 2;
     }
 
     @keyframes pop {
@@ -41,6 +42,7 @@
       border-radius: 12px;
       margin: 10px;
       cursor: pointer;
+      transition: transform 0.2s;
     }
 
     #yes {
@@ -49,18 +51,18 @@
     }
 
     #no {
-      background: #ddd;
+      background: #ccc;
       position: absolute;
     }
 
-    .heart {
+    .float {
       position: absolute;
-      color: #ff4d6d;
-      font-size: 20px;
-      animation: float 4s infinite ease-in;
+      animation: floatUp 5s linear;
+      font-size: 22px;
+      pointer-events: none;
     }
 
-    @keyframes float {
+    @keyframes floatUp {
       0% { transform: translateY(0); opacity: 1; }
       100% { transform: translateY(-800px); opacity: 0; }
     }
@@ -74,31 +76,52 @@
     <button id="no" onmouseover="moveNo()">No 😅</button>
   </div>
 
+  <!-- Sounds -->
+  <audio id="noSound">
+    <source src="https://www.myinstants.com/media/sounds/cartoon-slip.mp3">
+  </audio>
+
+  <audio id="yesMusic">
+    <source src="https://www.bensound.com/bensound-music/bensound-love.mp3">
+  </audio>
+
   <script>
+    let yesScale = 1;
+
     function moveNo() {
       const noBtn = document.getElementById("no");
-      noBtn.style.left = Math.random() * (window.innerWidth - 100) + "px";
-      noBtn.style.top = Math.random() * (window.innerHeight - 50) + "px";
+      const yesBtn = document.getElementById("yes");
+
+      noBtn.style.left = Math.random() * (window.innerWidth - 120) + "px";
+      noBtn.style.top = Math.random() * (window.innerHeight - 60) + "px";
+
+      document.getElementById("noSound").play();
+
+      yesScale += 0.15;
+      yesBtn.style.transform = `scale(${yesScale})`;
     }
 
     function yesClicked() {
+      document.getElementById("yesMusic").play();
+
       document.body.innerHTML = `
         <div class="box">
           <h1>❤️ I love you ❤️</h1>
-          <p>You just made my whole day 🥰</p>
+          <p>You just made my day 🥰<br>
+          Now you owe me a date 💎💖</p>
         </div>
       `;
     }
 
-    // floating hearts
+    // floating hearts & gems
     setInterval(() => {
-      const heart = document.createElement("div");
-      heart.className = "heart";
-      heart.innerHTML = "💖";
-      heart.style.left = Math.random() * 100 + "vw";
-      heart.style.bottom = "0px";
-      document.body.appendChild(heart);
-      setTimeout(() => heart.remove(), 4000);
+      const el = document.createElement("div");
+      el.className = "float";
+      el.innerHTML = Math.random() > 0.5 ? "💖" : "💎";
+      el.style.left = Math.random() * 100 + "vw";
+      el.style.bottom = "0px";
+      document.body.appendChild(el);
+      setTimeout(() => el.remove(), 5000);
     }, 300);
   </script>
 
