@@ -2,46 +2,85 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Happy Rose Day 🌹</title>
+<title>🌹</title>
 
 <style>
   body {
     margin: 0;
     height: 100vh;
-    background: linear-gradient(to bottom, #fff0f5, #ffe6ee);
+    background: linear-gradient(to bottom, #8b0000, #b30000, #ff4d4d);
     display: flex;
     justify-content: center;
     align-items: center;
+    font-family: "Georgia", serif;
     overflow: hidden;
-    font-family: 'Georgia', serif;
   }
 
-  h1 {
-    position: absolute;
-    z-index: 2;
-    font-size: 34px;
-    color: #b3003b;
-    background: rgba(255,255,255,0.8);
-    padding: 20px 30px;
-    border-radius: 20px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+  .envelope {
+    background: rgba(255,255,255,0.95);
+    padding: 40px 35px;
+    border-radius: 24px;
     text-align: center;
+    box-shadow: 0 25px 50px rgba(0,0,0,0.35);
+    cursor: pointer;
+    animation: pulse 1.8s infinite;
+    z-index: 5;
+  }
+
+  @keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.06); }
+    100% { transform: scale(1); }
+  }
+
+  .envelope h1 {
+    font-size: 42px;
+    margin: 0;
+  }
+
+  .envelope p {
+    margin-top: 12px;
+    font-size: 18px;
+    letter-spacing: 2px;
+    color: #b30000;
+    font-weight: bold;
+  }
+
+  .message {
+    background: rgba(255,255,255,0.95);
+    padding: 45px 30px;
+    border-radius: 26px;
+    text-align: center;
+    box-shadow: 0 25px 50px rgba(0,0,0,0.35);
+    z-index: 5;
+    animation: fadeIn 0.8s ease;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: scale(0.8); }
+    to { opacity: 1; transform: scale(1); }
+  }
+
+  .message h1 {
+    font-size: 32px;
+    color: #b30000;
   }
 
   .rose {
     position: absolute;
-    top: -100px;
-    font-size: 48px;
+    top: -150px;
+    font-size: 90px; /* BIG roses */
     animation: fall linear infinite;
-    opacity: 0.9;
+    opacity: 0.95;
+    pointer-events: none;
   }
 
   @keyframes fall {
     from {
-      transform: translateY(-100px) rotate(0deg);
+      transform: translateY(-150px) rotate(0deg);
     }
     to {
-      transform: translateY(110vh) rotate(360deg);
+      transform: translateY(120vh) rotate(360deg);
     }
   }
 </style>
@@ -49,24 +88,38 @@
 
 <body>
 
-<h1>🌹 Happy Rose Day 🌹</h1>
+<div class="envelope" id="envelope">
+  <h1>✉️💎</h1>
+  <p>OPEN</p>
+</div>
 
 <script>
-  function createRose() {
-    const rose = document.createElement("div");
-    rose.className = "rose";
-    rose.innerHTML = "🌹";
-    rose.style.left = Math.random() * 100 + "vw";
-    rose.style.animationDuration = 5 + Math.random() * 5 + "s";
-    rose.style.fontSize = 40 + Math.random() * 30 + "px";
-    document.body.appendChild(rose);
+  const envelope = document.getElementById("envelope");
 
-    setTimeout(() => {
-      rose.remove();
-    }, 10000);
+  envelope.addEventListener("click", () => {
+    document.body.innerHTML = `
+      <div class="message">
+        <h1>🌹 Happy Rose Day Pyri 🌹</h1>
+      </div>
+    `;
+
+    startRoses();
+  });
+
+  function startRoses() {
+    setInterval(() => {
+      const rose = document.createElement("div");
+      rose.className = "rose";
+      rose.innerHTML = "🌹";
+      rose.style.left = Math.random() * 100 + "vw";
+      rose.style.animationDuration = 6 + Math.random() * 5 + "s";
+      document.body.appendChild(rose);
+
+      setTimeout(() => {
+        rose.remove();
+      }, 12000);
+    }, 250);
   }
-
-  setInterval(createRose, 300);
 </script>
 
 </body>
